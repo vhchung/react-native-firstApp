@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { Spinner } from 'native-base';
-import { Font } from 'expo';
-import allReducers from './src/reducers/index.js';
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-import Counter from './src/components/counter.js';
-const store = createStore(allReducers);
+import { Font, AppLoading } from 'expo';
+import { Router, Scene } from 'react-native-router-flux';
+import PageOne from './src/components/PageOne';
+import PageTwo from './src/components/PageTwo';
 export default class App extends Component{
-  state = {
-    appIsReady: false,
+  constructor() {
+    super();
+    this.state = {
+      appIsReady: false
+    };
   }
   async componentWillMount() {
-    await Expo.Font.loadAsync({
+    await Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
       'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
     });
@@ -19,12 +19,15 @@ export default class App extends Component{
   }
   render(){
     if (!this.state.appIsReady) {
-      return <Spinner color='red' />;
+      return <AppLoading />;
     }
     return(
-      <Provider store= {store}>
-        <Counter />
-      </Provider>
+        <Router hideNavBar= "true">
+          <Scene key="root">
+            <Scene key="pageOne" component={PageOne} title="PageOne" initial={true} />
+            <Scene key="pageTwo" component={PageTwo} title="PageTwo" />
+          </Scene>
+        </Router>
     );
   }
 }
