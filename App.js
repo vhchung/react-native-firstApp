@@ -1,30 +1,25 @@
-import React, { Component } from 'react';
-import { Spinner } from 'native-base';
-import { Font } from 'expo';
-import allReducers from './src/reducers/index.js';
-import {createStore} from 'redux';
-import {Provider} from 'react-redux';
-import Counter from './src/components/counter.js';
-const store = createStore(allReducers);
-export default class App extends Component{
-  state = {
-    appIsReady: false,
+import React, { Component } from "react";
+import Expo from "expo";
+import HomeScreen from "./src/HomeScreen/index.js";
+export default class AwesomeApp extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isReady: false
+    };
   }
   async componentWillMount() {
     await Expo.Font.loadAsync({
-      'Roboto': require('native-base/Fonts/Roboto.ttf'),
-      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Ionicons: require("native-base/Fonts/Ionicons.ttf")
     });
-    this.setState({appIsReady: true});
+    this.setState({ isReady: true });
   }
-  render(){
-    if (!this.state.appIsReady) {
-      return <Spinner color='red' />;
+  render() {
+    if (!this.state.isReady) {
+      return <Expo.AppLoading />;
     }
-    return(
-      <Provider store= {store}>
-        <Counter />
-      </Provider>
-    );
+    return <HomeScreen />;
   }
 }
