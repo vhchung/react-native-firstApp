@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { Spinner } from 'native-base';
-import { Font } from 'expo';
+import { Font, AppLoading } from 'expo';
+import thunk from 'redux-thunk';
 import allReducers from './src/reducers/index.js';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import Counter from './src/components/counter.js';
-const store = createStore(allReducers);
+import AppWrapper from './src/AppWrapper';
+const store = createStore(allReducers, applyMiddleware(thunk));
+
 export default class App extends Component{
-  state = {
-    appIsReady: false,
+  constructor() {
+    super();
+    this.state = {
+      appIsReady: false
+    };
   }
   async componentWillMount() {
     await Expo.Font.loadAsync({
@@ -19,11 +24,11 @@ export default class App extends Component{
   }
   render(){
     if (!this.state.appIsReady) {
-      return <Spinner color='red' />;
+      return <AppLoading />;
     }
     return(
       <Provider store= {store}>
-        <Counter />
+        <AppWrapper />
       </Provider>
     );
   }

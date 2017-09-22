@@ -1,7 +1,9 @@
 import {combineReducers} from 'redux';
-import countReducer from './counterReducer.js';
+import gitReducer from './gitReducer';
+import activityReducer from './activityReducer';
 const allReducers = combineReducers({
-  count: countReducer
+  repos: gitReducer,
+  activeRepo: activityReducer
 });
 
 export default allReducers;
